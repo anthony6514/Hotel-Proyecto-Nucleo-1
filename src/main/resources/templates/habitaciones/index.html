@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hotel - Habitaciones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f4f8; }
+        .navbar { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+        .card-header { background: linear-gradient(135deg, #1a1a2e, #16213e); color: white; }
+        .badge-simple { background-color: #6c757d; }
+        .badge-doble  { background-color: #0d6efd; }
+        .badge-suite  { background-color: #6f42c1; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark px-4 py-3 mb-4">
+    <span class="navbar-brand fw-bold fs-4">
+        <i class="bi bi-building"></i> Hotel Manager
+    </span>
+</nav>
+
+<div class="container">
+    <div class="card shadow">
+        <div class="card-header d-flex justify-content-between align-items-center py-3">
+            <h5 class="mb-0"><i class="bi bi-door-open"></i> Habitaciones</h5>
+            <a href="/habitaciones/nueva" class="btn btn-light btn-sm">
+                <i class="bi bi-plus-circle"></i> Nueva Habitación
+            </a>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Número</th>
+                        <th>Tipo</th>
+                        <th>Precio / Noche</th>
+                        <th>Disponible</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="h : ${habitaciones}">
+                        <td th:text="${h.id}"></td>
+                        <td><strong th:text="${h.numero}"></strong></td>
+                        <td>
+                            <span th:if="${h.tipo == 'SIMPLE'}"  class="badge badge-simple">SIMPLE</span>
+                            <span th:if="${h.tipo == 'DOBLE'}"   class="badge badge-doble">DOBLE</span>
+                            <span th:if="${h.tipo == 'SUITE'}"   class="badge badge-suite">SUITE</span>
+                        </td>
+                        <td th:text="'$' + ${h.precioPorNoche}"></td>
+                        <td>
+                            <span th:if="${h.disponible}"  class="badge bg-success">Disponible</span>
+                            <span th:unless="${h.disponible}" class="badge bg-danger">Ocupada</span>
+                        </td>
+                        <td>
+                            <a th:href="@{/habitaciones/eliminar/{id}(id=${h.id})}"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('¿Eliminar habitación?')">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(habitaciones)}">
+                        <td colspan="6" class="text-center text-muted py-4">No hay habitaciones registradas</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
